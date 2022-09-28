@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: py-demos-roadtok8s-com-deployment
+  annotations:
+    keel.sh/policy: force
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@every 15m"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: py-demos-roadtok8s-com-deployment
+  template:
+    metadata:
+      labels:
+        app: py-demos-roadtok8s-com-deployment
+    spec:
+      containers:
+        - name: py-demos-roadtok8s-com-container
+          image: roadtokubernetes/py.demo.roadtok8s.com:latest
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "3001"
+          ports:
+            - name: py-demo-port
+              containerPort: 3001
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: py-demo-port
+            failureThreshold: 1
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: py-demo-port
+            failureThreshold: 30
+            periodSeconds: 10
+

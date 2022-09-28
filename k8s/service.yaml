@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: py-demos-roadtok8s-com-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      # set targetPort from deployment
+      targetPort: py-demo-port 
+  selector:
+    app: py-demos-roadtok8s-com-deployment
+
+
