@@ -8,7 +8,8 @@ WORKDIR /app
 # Update os deps
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    build-essential
+    build-essential \
+    curl
 
 # Create a virtual environment in /opt
 RUN python3 -m venv /opt/venv
